@@ -9,10 +9,11 @@ namespace Exam19_20
     {
         List<Player> allPlayers = new List<Player>();
         List<Player> selectedPlayers = new List<Player>();
+        int count = 0;
         public MainWindow()
         {
             InitializeComponent();
-
+            
         }
 
         private List<Player> CreatePlayers()
@@ -108,6 +109,26 @@ namespace Exam19_20
             //lbxSelected.ItemsSource = selectedPlayers;
             //lbxAll.SelectedItem = null;
 
+
+            // Selected Players Limit
+            int limit = 3;
+
+            if (count >= limit)
+            {
+                // you've reached the limit
+            }
+            else
+            {
+                AddSelected();
+            }
+
+            count = lbxSelected.Items.Count;
+            int spacesLeft = (limit - count);
+            tblkRemainingSpaces.Text = spacesLeft.ToString();
+        }
+
+        private void AddSelected()
+        {
             // Determine what was selected - need to put as Player because list box can return any type of object
             Player selected = lbxAll.SelectedItem as Player;
 

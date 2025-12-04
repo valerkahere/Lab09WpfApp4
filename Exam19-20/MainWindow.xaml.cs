@@ -9,11 +9,14 @@ namespace Exam19_20
     {
         List<Player> allPlayers = new List<Player>();
         List<Player> selectedPlayers = new List<Player>();
+        // Selected Players Limit and Count
+        int limit = 3;
         int count = 0;
+        int spacesLeft = 3;
         public MainWindow()
         {
             InitializeComponent();
-            
+
         }
 
         private List<Player> CreatePlayers()
@@ -87,6 +90,9 @@ namespace Exam19_20
 
             // Clearing the selected List Box
             lbxSelected.ItemsSource = null;
+
+            // Showing amount of available space on program start
+            tblkRemainingSpaces.Text = spacesLeft.ToString();
         }
 
         private void btnAdd_Click(object sender, RoutedEventArgs e)
@@ -110,12 +116,13 @@ namespace Exam19_20
             //lbxAll.SelectedItem = null;
 
 
-            // Selected Players Limit
-            int limit = 3;
 
+            // Checking space available
+            // Note: count, limit, spacesLeft are declared at class level
             if (count >= limit)
             {
                 // you've reached the limit
+                MessageBox.Show("You have too many players selected");
             }
             else
             {
@@ -123,7 +130,7 @@ namespace Exam19_20
             }
 
             count = lbxSelected.Items.Count;
-            int spacesLeft = (limit - count);
+            spacesLeft = (limit - count);
             tblkRemainingSpaces.Text = spacesLeft.ToString();
         }
 
@@ -170,6 +177,11 @@ namespace Exam19_20
             // Finally display in "all" (main) list box
             lbxAll.ItemsSource = null;
             lbxAll.ItemsSource = allPlayers;
+
+            // Displaying remaining space
+            count = lbxSelected.Items.Count;
+            int spacesLeft = (limit - count);
+            tblkRemainingSpaces.Text = spacesLeft.ToString();
         }
     }
 

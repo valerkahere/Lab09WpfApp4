@@ -88,6 +88,10 @@ namespace Exam19_20
             // Displaying Players in List Box
             lbxAll.ItemsSource = allPlayers;
 
+            // Will use IComparable - CompareTo method
+            selectedPlayers.Sort();
+            allPlayers.Sort();
+
             // Clearing the selected List Box
             lbxSelected.ItemsSource = null;
 
@@ -146,6 +150,10 @@ namespace Exam19_20
                 selectedPlayers.Add(selected);
                 allPlayers.Remove(selected);
 
+                // Will use IComparable - CompareTo method
+                selectedPlayers.Sort();
+                allPlayers.Sort();
+
                 // Because using list, not observable collections - reset needed
                 // refreshes that list on the screen
                 lbxAll.ItemsSource = null;
@@ -167,6 +175,10 @@ namespace Exam19_20
                 // Take action - move to other list
                 allPlayers.Add(selected);
                 selectedPlayers.Remove(selected);
+
+                // Will use IComparable - CompareTo method
+                selectedPlayers.Sort();
+                allPlayers.Sort();
 
                 // Because using list, not observable collections - reset needed
                 // refreshes that list on the screen

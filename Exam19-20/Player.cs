@@ -8,7 +8,7 @@
         Midfielder,
         Forward
     }
-    internal class Player
+    internal class Player : IComparable
     {
         // Properties - use shorthand unless there is a need for longer properties
         public string FirstName { get; set; } = string.Empty;
@@ -46,6 +46,33 @@
         {
             // Need to convert Preferred Position to string because it's enum
             return $"{FirstName} {Surname} ({Age}) {PreferredPosition.ToString().ToUpper()}";
+        }
+
+        public int CompareTo(object obj)
+        {
+            Player that = obj as Player;
+            //return this.PreferredPosition.CompareTo(that.PreferredPosition);
+            // compare preferred position of this object
+            // with position of the object beside it
+            // sort microsoft method will do rearranging for us 
+            // once we've identified here what it is we're comparing to sort objects
+
+            // if the position is the same, then sort on first name
+            if (this.PreferredPosition > that.PreferredPosition)
+            {
+                return 1;
+            }
+            else if (this.PreferredPosition < that.PreferredPosition)
+            {
+                return -1;
+            }
+            else
+            {
+                // otherwise positions are identical,
+                // so then return comparison of first names
+                // CompareTo will do a similar thing: return 1, -1, or 0
+                return this.FirstName.CompareTo(that.FirstName);
+            }
         }
     }
 

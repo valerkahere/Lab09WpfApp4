@@ -10,9 +10,10 @@ namespace Exam19_20
         List<Player> allPlayers = new List<Player>();
         List<Player> selectedPlayers = new List<Player>();
         // Selected Players Limit and Count
-        int limit = 3;
+        int limit = 11;
         int count = 0;
         int spacesLeft = 3;
+        int selectedGoalkeepers, selectedDefenders, selectedMidfielders, selectedForwards;
         public MainWindow()
         {
             InitializeComponent();
@@ -97,6 +98,9 @@ namespace Exam19_20
 
             // Showing amount of available space on program start
             tblkRemainingSpaces.Text = spacesLeft.ToString();
+
+            // Populate Combo Box
+            cbxFormation.ItemsSource = new string[] { "4-4-2", "4-3-3", "4-5-1" };
         }
 
         private void btnAdd_Click(object sender, RoutedEventArgs e)
@@ -132,10 +136,6 @@ namespace Exam19_20
             {
                 AddSelected();
             }
-
-            count = lbxSelected.Items.Count;
-            spacesLeft = (limit - count);
-            tblkRemainingSpaces.Text = spacesLeft.ToString();
         }
 
         private void AddSelected()
@@ -147,22 +147,125 @@ namespace Exam19_20
             if (selected != null)
             {
                 // Take action - move to other list
-                selectedPlayers.Add(selected);
-                allPlayers.Remove(selected);
 
-                // Will use IComparable - CompareTo method
-                selectedPlayers.Sort();
-                allPlayers.Sort();
+                // First, check that player allowed in current formation
+                if (IsValidPlayer(selected))
+                {
+                    selectedPlayers.Add(selected);
+                    allPlayers.Remove(selected);
+                    RefreshScreen();
+                }
+                else
+                {
+                    MessageBox.Show("Player not allowed in formation");
+                }
 
-                // Because using list, not observable collections - reset needed
-                // refreshes that list on the screen
-                lbxAll.ItemsSource = null;
-                lbxAll.ItemsSource = allPlayers;
+
             }
 
             // Finally display in selected list box
             lbxSelected.ItemsSource = null;
             lbxSelected.ItemsSource = selectedPlayers;
+        }
+
+        private void cbxFormation_SelectionChanged(object sender, System.Windows.Controls.SelectionChangedEventArgs e)
+        {
+            // reset
+
+
+            // all players selected are returned to left list
+            foreach (Player player in selectedPlayers)
+            {
+                allPlayers.Add(player);
+            }
+
+
+            // clear selected players
+            selectedPlayers.Clear();
+
+            // reset the allowed number of positions
+            selectedGoalkeepers = 0;
+            selectedDefenders = 0;
+            selectedMidfielders = 0;
+            selectedForwards = 0;
+            RefreshScreen();
+        }
+
+        private void RefreshScreen()
+        {
+            // Will use IComparable - CompareTo method
+            selectedPlayers.Sort();
+            allPlayers.Sort();
+
+            // Because using list, not observable collections - reset needed
+            // refreshes that list on the screen
+            lbxAll.ItemsSource = null;
+            lbxAll.ItemsSource = allPlayers;
+
+            lbxSelected.ItemsSource = null;
+            lbxSelected.ItemsSource = selectedPlayers;
+
+            // Displaying remaining space
+            count = lbxSelected.Items.Count;
+            spacesLeft = (limit - count);
+            tblkRemainingSpaces.Text = spacesLeft.ToString();
+        }
+
+        private bool IsValidPlayer(Player player)
+        {
+            bool valid = false;
+
+            // det selected formation
+            string? selectedFormation = cbxFormation.SelectedItem as string; // 4-4-2
+            if (selectedFormation != null)
+            {
+                string[] formation = selectedFormation.Split("-");
+
+                // det number of players in each position
+                int allowedGoalkeepers = 1;
+                int allowedDefenders = int.Parse(formation[0]);
+                int allowedMidfielders = int.Parse(formation[1]);
+                int allowedForwards = int.Parse(formation[2]);
+
+                // check selected against allowed
+                // selected Goalkeepers declared at class level
+                switch (player.PreferredPosition)
+                {
+                    case Position.Goalkeeper:
+                        if (selectedGoalkeepers < allowedGoalkeepers)
+                        {
+                            selectedGoalkeepers++;
+                            valid = true;
+                        }
+                        break;
+                    case Position.Defender:
+                        if (selectedDefenders < allowedDefenders)
+                        {
+                            selectedDefenders++;
+                            valid = true;
+                        }
+                        break;
+                    case Position.Midfielder:
+                        if (selectedMidfielders < allowedMidfielders)
+                        {
+                            selectedMidfielders++;
+                            valid = true;
+                        }
+                        break;
+                    case Position.Forward:
+                        if (selectedForwards < allowedForwards)
+                        {
+                            selectedForwards++;
+                            valid = true;
+                        }
+                        break;
+                }
+            }
+
+
+
+
+            return valid;
         }
 
         private void btnRemove_Click(object sender, RoutedEventArgs e)
@@ -180,20 +283,12 @@ namespace Exam19_20
                 selectedPlayers.Sort();
                 allPlayers.Sort();
 
-                // Because using list, not observable collections - reset needed
-                // refreshes that list on the screen
-                lbxSelected.ItemsSource = null;
-                lbxSelected.ItemsSource = selectedPlayers;
+
             }
 
-            // Finally display in "all" (main) list box
-            lbxAll.ItemsSource = null;
-            lbxAll.ItemsSource = allPlayers;
+            RefreshScreen();
 
-            // Displaying remaining space
-            count = lbxSelected.Items.Count;
-            int spacesLeft = (limit - count);
-            tblkRemainingSpaces.Text = spacesLeft.ToString();
+
         }
     }
 

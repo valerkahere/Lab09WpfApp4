@@ -9,7 +9,7 @@
     <Grid>
         <Button Name="btnRemove" Content="&lt;&lt; Remove" HorizontalAlignment="Center" Margin="0,301,0,0" VerticalAlignment="Top" Click="btnRemove_Click"/>
         <Button Name="btnAdd" Content="Add &gt;&gt;" HorizontalAlignment="Center" Margin="0,130,0,0" VerticalAlignment="Top" Click="btnAdd_Click"/>
-        <ComboBox x:Name="cbxFormation" HorizontalAlignment="Left" Margin="265,26,0,0" VerticalAlignment="Top" Width="120"/>
+        <ComboBox x:Name="cbxFormation" HorizontalAlignment="Left" Margin="265,26,0,0" VerticalAlignment="Top" Width="120" SelectionChanged="cbxFormation_SelectionChanged"/>
         <Label Content="Selected Players" HorizontalAlignment="Left" Margin="510,66,0,0" VerticalAlignment="Top"/>
         <ListBox Name="lbxAll" d:ItemsSource="{d:SampleData ItemCount=5}" Margin="63,97,500,70"/>
         <ListBox Name="lbxSelected" d:ItemsSource="{d:SampleData ItemCount=5}" Margin="510,96,53,70"/>

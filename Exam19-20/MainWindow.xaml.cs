@@ -46,8 +46,8 @@ namespace Exam19_20
                 int month = random.Next(1, 13);
                 int day = random.Next(1, 29);
 
-                
-                switch(i)
+
+                switch (i)
                 {
                     case 2:
                         currentPosition = Position.Defender;
@@ -83,6 +83,55 @@ namespace Exam19_20
 
             // Displaying Players in List Box
             lbxAll.ItemsSource = allPlayers;
+
+            // Clearing the selected List Box
+            lbxSelected.ItemsSource = null;
+        }
+
+        private void btnAdd_Click(object sender, RoutedEventArgs e)
+        {
+
+            // && allPlayers.Contains(selectedItem)
+
+            //string? selectedItem = lbxAll.SelectedItem.ToString();
+            //// If the selection is actually made (not null) and the players list contains it, then add it to selectedPlayers list and listbox
+            //if (!(string.IsNullOrEmpty(selectedItem)))
+            //{
+            //    // Now safely getting the player object
+            //    Player? player = lbxAll.SelectedItem as Player;
+            //    selectedPlayers.Add(player);
+
+
+
+            //}
+
+            //lbxSelected.ItemsSource = selectedPlayers;
+            //lbxAll.SelectedItem = null;
+
+            // Determine what was selected - need to put as Player because list box can return any type of object
+            Player selected = lbxAll.SelectedItem as Player;
+
+            // Check not null
+            if (selected != null)
+            {
+                // Take action - move to other list
+                selectedPlayers.Add(selected);
+                allPlayers.Remove(selected);
+
+                // Because using list, not observable collections - reset needed
+                // refreshes that list on the screen
+                lbxAll.ItemsSource = null;
+                lbxAll.ItemsSource = allPlayers;
+            }
+
+            // Finally display in selected list box
+            lbxSelected.ItemsSource = null;
+            lbxSelected.ItemsSource = selectedPlayers;
+        }
+
+        private void btnRemove_Click(object sender, RoutedEventArgs e)
+        {
+
         }
     }
 

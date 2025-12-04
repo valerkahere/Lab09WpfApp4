@@ -131,7 +131,24 @@ namespace Exam19_20
 
         private void btnRemove_Click(object sender, RoutedEventArgs e)
         {
+            Player selected = lbxSelected.SelectedItem as Player;
 
+            // Check not null
+            if (selected != null)
+            {
+                // Take action - move to other list
+                allPlayers.Add(selected);
+                selectedPlayers.Remove(selected);
+
+                // Because using list, not observable collections - reset needed
+                // refreshes that list on the screen
+                lbxSelected.ItemsSource = null;
+                lbxSelected.ItemsSource = selectedPlayers;
+            }
+
+            // Finally display in "all" (main) list box
+            lbxAll.ItemsSource = null;
+            lbxAll.ItemsSource = allPlayers;
         }
     }
 

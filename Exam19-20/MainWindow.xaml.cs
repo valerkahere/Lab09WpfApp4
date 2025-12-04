@@ -30,21 +30,42 @@ namespace Exam19_20
                 "O'Connor", "O'Neill", "O'Reilly", "O'Sullivan", "Ryan", "Walsh"
             };
 
+
             // Create players
             Random random = new Random();
-
+            int currentYear = DateTime.Now.Year;
+            // generate set number of positions
+            Position currentPosition = Position.Goalkeeper;
             for (int i = 0; i < firstNames.Length; i++)
             {
                 // generate random date where age is 20-30
                 // now is 2025
-                int currentYear = 2025;
                 int desiredAge = random.Next(20, 31);
+
+                // simply generating random month (1-12) and days amount (1-28)
+                int month = random.Next(1, 13);
+                int day = random.Next(1, 29);
+
+                
+                switch(i)
+                {
+                    case 2:
+                        currentPosition = Position.Defender;
+                        break;
+                    case 8:
+                        currentPosition = Position.Midfielder;
+                        break;
+                    case 14:
+                        currentPosition = Position.Forward;
+                        break;
+                }
 
                 Player p = new Player()
                 {
                     FirstName = firstNames[random.Next(0, firstNames.Length)],
                     Surname = lastNames[random.Next(0, lastNames.Length)],
-                    DateOfBirth = new DateTime(currentYear - desiredAge, 1, 1)
+                    DateOfBirth = new DateTime(currentYear - desiredAge, month, day),
+                    PreferredPosition = currentPosition
                 };
 
                 players.Add(p);
